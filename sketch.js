@@ -1,10 +1,15 @@
 
+let emailWindow 
+
 let replyHeadingArray, replyHeading, replyHeadingTextArray, replyHeadingText;
 
 let inboxDivider, inboxEmail, inboxDividerArray
 
 let contextArray
 let inboxTextArray, inboxText, inboxTextArray1, inboxText1, inboxTextArray2, inboxText2, inboxTextArray3, inboxText3
+
+let interactionElement,autoComplete,tabButton
+let textCursor
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -16,7 +21,7 @@ function setup() {
   emailSections.collider = 's'
   emailSections.color = 230
 
-  let emailWindow = new emailSections.Sprite()
+  emailWindow = new emailSections.Sprite()
   emailWindow.pos = {x: width/2, y: height/2}
   emailWindow.w = width*0.9
   emailWindow.h = height*0.9
@@ -185,7 +190,8 @@ function setup() {
    replyHeading.x = (draftReplyTo.x - draftReplyTo.w/2) + replyHeading.w/2 + margin*2
    replyHeading.h = textHeight
    replyHeading.y = (draftReplyTo.y - draftReplyTo.h/2) + (replyHeadingArray.length * replyHeading.h)
-   replyHeading.color=200
+   replyHeading.color=230
+   replyHeading.stroke = replyHeading.color +10
   }
   replyHeadingTextArray = []
   while(replyHeadingTextArray.length < 3){
@@ -196,7 +202,8 @@ function setup() {
    replyHeadingText.x = (replyHeading.x + replyHeading.w/2) + replyHeadingText.w/2
    replyHeadingText.h = textHeight
    replyHeadingText.y = (draftReplyTo.y - draftReplyTo.h/2) + (replyHeadingTextArray.length * replyHeadingText.h)
-   replyHeadingText.color=200
+   replyHeadingText.color=230
+   replyHeadingText.stroke = replyHeadingText.color +10
   }
 
   let replyLine = new draftElements.Sprite()
@@ -215,7 +222,8 @@ function setup() {
    sendHeading.x = (draftHeading.x - draftHeading.w/2) + sendHeading.w/2 + margin*2
    sendHeading.h = textHeight
    sendHeading.y = (draftHeading.y - draftHeading.h/2) + (sendHeadingArray.length * sendHeading.h * 1.3) 
-   sendHeading.color=200
+   sendHeading.color=230
+   sendHeading.stroke = sendHeading.color + 10
   }
 
   sendHeadingLinesArray = []
@@ -317,11 +325,12 @@ function setup() {
   contextQuestion1.text = 'should they lie and say that everyone participated?                                    '
   contextQuestion1.color = 255
 
-  let interactionElement = new Group()
+  interactionElement = new Group()
   interactionElement.collider = 's'
   interactionElement.color = 255
+  interactionElement.visible = true
 
-  let autoComplete = new interactionElement.Sprite()
+  autoComplete = new interactionElement.Sprite()
   autoComplete.w = contextQuestion1.w * 0.577
   autoComplete.x = contextQuestion1.x+contextQuestion1.w/2 - autoComplete.w/2
   autoComplete.h = contextQuestion1.h
@@ -332,7 +341,7 @@ function setup() {
   autoComplete.color = 255
   autoComplete.stroke = autoComplete.color
 
-  let tabButton = new interactionElement.Sprite()
+  tabButton = new interactionElement.Sprite()
   tabButton.w = textEditor.w * 0.075
   tabButton.x = textEditor.x *1.15
   tabButton.h = autoComplete.h
@@ -344,6 +353,14 @@ function setup() {
   tabButton.textColor = 200
   tabButton.stroke = 200
 
+  textCursor = new Sprite()
+  textCursor.w = 1
+  textCursor.x = autoComplete.x - autoComplete.w/2
+  textCursor.h = autoComplete.textSize
+  textCursor.y = autoComplete.y
+  textCursor.collider = 's'
+  textCursor.stroke = 0
+  textCursor.visible = true
 
 
 
@@ -354,12 +371,31 @@ function setup() {
 
 function draw() {
   background(200);
+
+
+
+  // if (frameCount % 30){
+  //   textCursor.visible = false
+  // } else{
+  //   textCursor.visible = true
+  // }
+  //needs a hold when visible before disappearing again
+
+
 }
 
 
-
 function keyPressed(){
-  
+  if (keyCode === 9){
+    interactionElement.visible = false
+    // textCursor.x = textCursor.x+ autoComplete.w*0.39
+    textCursor.x = autoComplete.x - autoComplete.w/2 + autoComplete.w*0.39
+    //set in place in case they push tab twice. 
+  }
 
+  if (keyCode === BACKSPACE){
+    interactionElement.visible = true
+    textCursor.x = autoComplete.x - autoComplete.w/2
+  }
 
 }
