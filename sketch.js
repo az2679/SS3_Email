@@ -1,6 +1,10 @@
 
 let replyHeadingArray, replyHeading, replyHeadingTextArray, replyHeadingText;
 
+let inboxDivider, inboxEmail, inboxDividerArray
+
+let contextArray
+let inboxTextArray, inboxText, inboxTextArray1, inboxText1, inboxTextArray2, inboxText2, inboxTextArray3, inboxText3
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -45,6 +49,7 @@ function setup() {
   inboxBar.h = emailWindow.h - emailWindowTab1.h - emailWindowTab2.h
   inboxBar.y = emailWindow.y + emailWindowTab1.h
   inboxBar.color = 255
+  inboxBar.stroke = emailSections.color
 
   let emailDraft = new emailSections.Sprite()
   emailDraft.w = emailWindow.w*0.53
@@ -53,10 +58,38 @@ function setup() {
   emailDraft.y = emailWindow.y + emailWindowTab1.h - margin/2
   emailDraft.color = 255
 
+  //
+
   let emailInterface = new Group()
   emailInterface.collider = 's'
   emailInterface.color = 245
   emailInterface.stroke = emailInterface.color 
+
+  let searchBar = new emailInterface.Sprite()
+  searchBar.w = emailWindowTab1.w*0.6
+  searchBar.x = emailWindowTab1.x
+  searchBar.h = emailWindowTab1.h - margin *1.5
+  searchBar.y = emailWindowTab1.y
+  searchBar.color = 180
+  searchBar.stroke = searchBar.color 
+
+  let windowButtons = new emailInterface.Sprite()
+  windowButtons.w = 60
+  windowButtons.x = (emailWindow.x - emailWindow.w/2) + windowButtons.h * 0.75
+  windowButtons.h = 25
+  windowButtons.y = (emailWindow.y - emailWindow.h/2) + windowButtons.h
+  windowButtons.color = 180
+  windowButtons.stroke = windowButtons.color 
+
+  let windowButtons1 = new emailInterface.Sprite()
+  windowButtons1.w = 60
+  windowButtons1.x = (emailWindow.x + emailWindow.w/2) - windowButtons.h * 1.75
+  windowButtons1.h = 25
+  windowButtons1.y = (emailWindow.y - emailWindow.h/2) + windowButtons.h
+  windowButtons1.color = 180
+  windowButtons1.stroke = windowButtons.color 
+
+  //
 
   let emailDraftTab = new emailInterface.Sprite()
   emailDraftTab.w = emailDraft.w
@@ -69,6 +102,58 @@ function setup() {
   newMessageTab.x = (sideBar.x - sideBar.w/2) + newMessageTab.w/2 + margin*2
   newMessageTab.h = emailWindowTab2.h -margin/2
   newMessageTab.y = emailWindowTab2.y + margin/2
+
+  let sideBarTab = new emailInterface.Sprite()
+  sideBarTab.w = sideBar.w * 0.95
+  sideBarTab.x = sideBar.x
+  sideBarTab.h = sideBar.h * 0.96
+  sideBarTab.y = sideBar.y - sideBar.h * 0.005
+
+  //
+
+  let focusedInbox = new emailInterface.Sprite()
+  focusedInbox.w = inboxBar.w
+  focusedInbox.x = inboxBar.x
+  focusedInbox.h = inboxBar.h* 0.125
+  focusedInbox.y = (inboxBar.y - inboxBar.h/2) + focusedInbox.h/2
+  focusedInbox.stroke = emailSections.color
+
+
+  inboxEmail = new Group()
+  inboxEmail.collider = 's'
+  inboxEmail.color = inboxBar.color
+
+  inboxEmail.w = inboxBar.w
+  inboxEmail.x = inboxBar.x
+  inboxEmail.h = textHeight*1.6
+
+  inboxEmailReplyArray = []
+  while (inboxEmailReplyArray.length < 3){
+    inboxEmailReply = new inboxEmail.Sprite()
+
+    inboxEmailReply.stroke = emailSections.color
+    inboxEmailReply.y = ((inboxBar.y-inboxBar.h/2) + focusedInbox.h)  + inboxEmail.h/2 + (inboxEmail.h * inboxEmailReplyArray.length)
+
+    inboxEmailReplyArray.push(inboxEmailReply)
+  }
+
+  inboxEmailReplyArray[1].color = 210
+
+  inboxDividerArray = []
+  while (inboxDividerArray.length < 6){
+    inboxDivider = new inboxEmail.Sprite()
+
+    inboxDivider.h = 0
+    inboxDivider.stroke = emailSections.color
+    inboxDivider.y = (inboxEmailReply.y + inboxEmailReply.h/2) +  (textHeight * inboxDividerArray.length * 2.2)
+    
+
+    inboxDividerArray.push(inboxDivider)
+  }
+
+
+
+
 
   let draftElements = new Group()
   draftElements.collider = 's'
@@ -89,6 +174,7 @@ function setup() {
   draftReplyTo.h = emailDraft.h*0.19
   draftReplyTo.y = (emailDraft.y + emailDraft.h/2) - draftReplyTo.h/2
   draftReplyTo.visible = false
+
 
   replyHeadingArray = []
   while(replyHeadingArray.length < 3){
@@ -153,8 +239,127 @@ function setup() {
   textEditor.stroke = textEditor.color
 
 
+
+  let contextPlacement = new Group()
+  contextPlacement.collider = 's'
+  contextArray = []
+
+  inboxTextArray = []
+  while (inboxTextArray.length < 2){
+    inboxText = new contextPlacement.Sprite()
+    inboxText.w = inboxBar.w -2
+    inboxText.x = inboxBar.x
+    inboxText.h = textHeight * 0.75 - 2
+    inboxText.y = inboxDividerArray[0].y + inboxText.h/2 + (inboxText.h * (inboxTextArray.length+1))
+    inboxTextArray.push(inboxText)
+  }
+
+  contextArray.push(inboxTextArray) 
+
+  inboxTextArray1 = []
+  while (inboxTextArray1.length < 2){
+    inboxText1 = new contextPlacement.Sprite()
+    inboxText1.w = inboxBar.w -2
+    inboxText1.x = inboxBar.x
+    inboxText1.h = textHeight * 0.75 -2
+    inboxText1.y = inboxDividerArray[1].y + inboxText1.h/2 + (inboxText1.h * (inboxTextArray1.length+1))
+    inboxTextArray1.push(inboxText1)
+  }
+  contextArray.push(inboxTextArray1) 
+
+  inboxTextArray2 = []
+  while (inboxTextArray2.length < 2){
+    inboxText2 = new contextPlacement.Sprite()
+    inboxText2.w = inboxBar.w -2
+    inboxText2.x = inboxBar.x
+    inboxText2.h = textHeight * 0.75 -2
+    inboxText2.y = inboxDividerArray[2].y + inboxText.h/2 + (inboxText.h * (inboxTextArray2.length+1))
+    inboxTextArray2.push(inboxText2)
+  }
+  contextArray.push(inboxTextArray2) 
+
+  inboxTextArray3 = []
+  while (inboxTextArray3.length < 2){
+    inboxText3 = new contextPlacement.Sprite()
+    inboxText3.w = inboxBar.w -2
+    inboxText3.x = inboxBar.x
+    inboxText3.h = textHeight * 0.75 -2
+    inboxText3.y = inboxDividerArray[3].y + inboxText.h/2 + (inboxText.h * (inboxTextArray3.length+1))
+    inboxTextArray3.push(inboxText3)
+  }
+  contextArray.push(inboxTextArray3) 
+
+  contextPlacement.color = 255
+  contextPlacement.stroke = 255
+  contextArray[0][0].text = 'A teacher gave an optional assignment'
+  contextArray[0][1].text = 'to conduct a social experiment '
+  contextArray[1][0].text = 'outside of class with everyone '
+  contextArray[1][1].text = 'for extra credit.'
+  contextArray[2][0].text = 'One criteria for completion of the assignment'
+  contextArray[2][1].text = 'is that everyone participated.'
+  contextArray[3][0].text = 'However, when conducting the experiment, '
+  contextArray[3][1].text = 'a few classmates were absent.'
+
+  let contextQuestion = new contextPlacement.Sprite()
+  contextQuestion.w = textEditor.w
+  contextQuestion.x = textEditor.x
+  contextQuestion.h = textHeight
+  contextQuestion.y = textEditor.y + textEditor.h/2 + contextQuestion.h/2 + emailDraft.h*0.15
+  contextQuestion.textSize = 15
+  contextQuestion.text = 'When the teacher asked the class representative if everyone participated,'
+
+  let contextQuestion1 = new contextPlacement.Sprite()
+  contextQuestion1.w = textEditor.w
+  contextQuestion1.x = textEditor.x
+  contextQuestion1.h = textHeight
+  contextQuestion1.y = textEditor.y + textEditor.h/2 + contextQuestion.h*1.5 + emailDraft.h*0.15
+  contextQuestion1.textSize = 15
+  contextQuestion1.text = 'should they lie and say that everyone participated?                                    '
+  contextQuestion1.color = 255
+
+  let interactionElement = new Group()
+  interactionElement.collider = 's'
+  interactionElement.color = 255
+
+  let autoComplete = new interactionElement.Sprite()
+  autoComplete.w = contextQuestion1.w * 0.577
+  autoComplete.x = contextQuestion1.x+contextQuestion1.w/2 - autoComplete.w/2
+  autoComplete.h = contextQuestion1.h
+  autoComplete.y = contextQuestion1.y
+  autoComplete.textSize = 15
+  autoComplete.textColor = 200
+  autoComplete.text = 'veryone participated?                                                       '
+  autoComplete.color = 255
+  autoComplete.stroke = autoComplete.color
+
+  let tabButton = new interactionElement.Sprite()
+  tabButton.w = textEditor.w * 0.075
+  tabButton.x = textEditor.x *1.15
+  tabButton.h = autoComplete.h
+  tabButton.y = autoComplete.y
+  autoComplete.color = 255
+    //need to set color or it wont show
+  tabButton.text = 'tab'
+  tabButton.textSize = 12
+  tabButton.textColor = 200
+  tabButton.stroke = 200
+
+
+
+
+
+
+
 }
 
 function draw() {
   background(200);
+}
+
+
+
+function keyPressed(){
+  
+
+
 }
