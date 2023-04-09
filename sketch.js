@@ -8,7 +8,7 @@ let inboxDivider, inboxEmail, inboxDividerArray
 let contextArray
 let inboxTextArray, inboxText, inboxTextArray1, inboxText1, inboxTextArray2, inboxText2, inboxTextArray3, inboxText3
 
-let interactionElement,autoComplete,tabButton, textCursor, backSpace
+let interactionElement,autoComplete,tabButton, textCursor, backSpace, backSpaceExtended
 
 let tabToggle
 
@@ -307,8 +307,8 @@ function setup() {
   contextArray[1][1].text = 'for extra credit.'
   contextArray[2][0].text = 'One criteria for completion of the assignment'
   contextArray[2][1].text = 'is that everyone participated.'
-  contextArray[3][0].text = 'However, when conducting the experiment, '
-  contextArray[3][1].text = 'a few classmates were absent.'
+  // contextArray[3][0].text = 'However, when conducting the experiment, '
+  // contextArray[3][1].text = 'a few classmates were absent.'
 
   let contextQuestion = new contextPlacement.Sprite()
   contextQuestion.w = textEditor.w
@@ -326,6 +326,15 @@ function setup() {
   contextQuestion1.textSize = 15
   contextQuestion1.text = 'should they lie and say that everyone participated?                                    '
   contextQuestion1.color = 255
+
+  let contextQuestion2 = new contextPlacement.Sprite()
+  contextQuestion2.w = textEditor.w
+  contextQuestion2.x = textEditor.x 
+  contextQuestion2.h = textHeight 
+  contextQuestion2.y = textEditor.y + textEditor.h/2 + contextQuestion.h/2 + emailDraft.h*0.15 - textHeight
+  contextQuestion2.textSize = 15
+  contextQuestion2.text = '  However, when conducting the experiment, a few classmates were absent.'
+
 
   interactionElement = new Group()
   interactionElement.collider = 's'
@@ -374,16 +383,29 @@ function setup() {
   backSpace.collider = 's'
   backSpace.visible = false
 
+  backSpaceExtended = new Sprite()
+  backSpaceExtended.w = contextQuestion.w
+  backSpaceExtended.x = contextQuestion.x-contextQuestion.w/2 + backSpaceExtended.w/2
+  backSpaceExtended.h = contextQuestion.h *2
+  backSpaceExtended.y = contextQuestion.y + contextQuestion.h/2
+  backSpaceExtended.color = 255
+  backSpaceExtended.stroke = backSpaceExtended.color 
+  backSpaceExtended.collider = 's'
+  backSpaceExtended.visible = false
+
+
 
 
 }
 
 function draw() {
   background(200);
+
+  // console.log(yesOutcome, noOutcome)
 }
 
 
-function keyPressed(){
+function keyReleased(){
 
   
   //keyCode === 9 is tab
@@ -397,13 +419,26 @@ function keyPressed(){
     tabToggle == true
   }
 
+  //option1: can go back and forth 
+  // if (keyCode === BACKSPACE){
+  //   interactionElement.visible = true
+  //   textCursor.x = autoComplete.x - autoComplete.w/2
+  //   tabToggle = false
+  // }
+
+
+  //option 2: no outcome
   if (keyCode === BACKSPACE){
-    if (tabToggle = true){
-      interactionElement.visible = true
-      textCursor.x = autoComplete.x - autoComplete.w/2
-      tabToggle = false
-    }
+    backSpaceExtended.visible = true
+    textCursor.x = contextQuestion2.x + contextQuestion2.w/2
+    tabToggle = false
   }
+
+
+
+
+  
+  
 
 
 
