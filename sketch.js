@@ -8,8 +8,10 @@ let inboxDivider, inboxEmail, inboxDividerArray
 let contextArray
 let inboxTextArray, inboxText, inboxTextArray1, inboxText1, inboxTextArray2, inboxText2, inboxTextArray3, inboxText3
 
-let interactionElement,autoComplete,tabButton
-let textCursor
+let interactionElement,autoComplete,tabButton, textCursor, backSpace
+
+let tabToggle
+
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -362,8 +364,15 @@ function setup() {
   textCursor.stroke = 0
   textCursor.visible = true
 
-
-
+  backSpace = new Sprite()
+  backSpace.w = contextQuestion1.w * 0.577
+  backSpace.x = contextQuestion1.x+contextQuestion1.w/2 - autoComplete.w*0.53
+  backSpace.h = contextQuestion1.h + 4
+  backSpace.y = contextQuestion1.y
+  backSpace.color = 255
+  backSpace.stroke = backSpace.color 
+  backSpace.collider = 's'
+  backSpace.visible = false
 
 
 
@@ -371,31 +380,31 @@ function setup() {
 
 function draw() {
   background(200);
-
-
-
-  // if (frameCount % 30){
-  //   textCursor.visible = false
-  // } else{
-  //   textCursor.visible = true
-  // }
-  //needs a hold when visible before disappearing again
-
-
 }
 
 
 function keyPressed(){
+
+  
+  //keyCode === 9 is tab
+  tabToggle = false
+
   if (keyCode === 9){
     interactionElement.visible = false
     // textCursor.x = textCursor.x+ autoComplete.w*0.39
     textCursor.x = autoComplete.x - autoComplete.w/2 + autoComplete.w*0.39
     //set in place in case they push tab twice. 
+    tabToggle == true
   }
 
   if (keyCode === BACKSPACE){
-    interactionElement.visible = true
-    textCursor.x = autoComplete.x - autoComplete.w/2
+    if (tabToggle = true){
+      interactionElement.visible = true
+      textCursor.x = autoComplete.x - autoComplete.w/2
+      tabToggle = false
+    }
   }
+
+
 
 }
