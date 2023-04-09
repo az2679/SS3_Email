@@ -191,7 +191,7 @@ function setup() {
    replyHeading.w = draftReplyTo.w * 0.1
    replyHeading.x = (draftReplyTo.x - draftReplyTo.w/2) + replyHeading.w/2 + margin*2
    replyHeading.h = textHeight
-   replyHeading.y = (draftReplyTo.y - draftReplyTo.h/2) + (replyHeadingArray.length * replyHeading.h)
+   replyHeading.y = (draftReplyTo.y - draftReplyTo.h/2) + (replyHeadingArray.length * replyHeading.h) - draftReplyTo.h*0.2
    replyHeading.color=230
    replyHeading.stroke = replyHeading.color +10
   }
@@ -203,7 +203,7 @@ function setup() {
    replyHeadingText.w = draftReplyTo.w * 0.6
    replyHeadingText.x = (replyHeading.x + replyHeading.w/2) + replyHeadingText.w/2
    replyHeadingText.h = textHeight
-   replyHeadingText.y = (draftReplyTo.y - draftReplyTo.h/2) + (replyHeadingTextArray.length * replyHeadingText.h)
+   replyHeadingText.y = (draftReplyTo.y - draftReplyTo.h/2) + (replyHeadingTextArray.length * replyHeadingText.h) - draftReplyTo.h*0.2
    replyHeadingText.color=230
    replyHeadingText.stroke = replyHeadingText.color +10
   }
@@ -212,8 +212,17 @@ function setup() {
   replyLine.w = draftReplyTo.w * 0.94
   replyLine.x = (draftReplyTo.x - draftReplyTo.w/2) + replyLine.w/2 + margin*2
   replyLine.h = 0
-  replyLine.y = draftReplyTo.y - draftReplyTo.h/2
+  replyLine.y = draftReplyTo.y - draftReplyTo.h*0.65
   replyLine.stroke = 0
+
+  let draftSaved = new draftElements.Sprite()
+  draftSaved.w = draftReplyTo.w * 0.3
+  draftSaved.x = (draftReplyTo.x + draftReplyTo.w/2) - draftSaved.w/2 - margin*1.5
+  draftSaved.h = textHeight*0.75
+  draftSaved.y = emailDraft.y+emailDraft.h/2 - draftSaved.h/2 - margin
+  draftSaved.color = 230
+  draftSaved.stroke = draftSaved.color
+
 
   sendHeadingArray = []
   while(sendHeadingArray.length < 3){
@@ -426,11 +435,17 @@ function keyReleased(){
   //   tabToggle = false
   // }
 
-
   //option 2: no outcome
   if (keyCode === BACKSPACE){
     backSpaceExtended.visible = true
     textCursor.x = contextQuestion2.x + contextQuestion2.w/2
+    tabToggle = false
+  }
+
+  if (keyCode === 87){
+    backSpaceExtended.visible = false
+    interactionElement.visible = true
+    textCursor.x = textCursor.x = autoComplete.x - autoComplete.w/2
     tabToggle = false
   }
 
